@@ -51,21 +51,21 @@ pipeline.
 └── README.md
 
 ## 3. 
-# 0) 到家目录（保险起见） To the home directory (just to be safe)
+# 0) To the home directory (just to be safe)
 cd ~
 
-# 1) 建项目根目录（在 WSL Linux 文件系统里） Create project root directory （In the WSL Linux file system）
+# 1) Create project root directory （In the WSL Linux file system）
 mkdir -p ~/projects/3d_manipulation_project
 cd ~/projects/3d_manipulation_project
 
-# 2) 建子目录结构 Create subdirectory structure
+# 2) Create subdirectory structure
 mkdir -p reconstruction/{calib,sfm,mvs,export} \
          ros2_ws/src \
          scripts \
          data/{obj1,obj2} \
          docs
 
-# 3) 初始化 git 仓库（可选但强烈建议）  Initialize git repository
+# 3) Initialize git repository
 git init
 echo "# 3D Reconstruction + Manipulation (Coursework)" > README.md
 echo ".venv/" >> .gitignore
@@ -73,23 +73,23 @@ echo "build/
 install/
 log/" >> .gitignore
 
-# 4)（可选）为重建部分建 Python 虚拟环境  To reconstruct part of the Python virtual environment 
+# 4) To reconstruct part of the Python virtual environment 
 python3 -m venv .venv
 source .venv/bin/activate
 
-# 5) 在 ROS2 工作区里创建 3 个包骨架   Create 3 package skeletons in a ROS2 workspace
+# 5) Create 3 package skeletons in a ROS2 workspace
 cd ros2_ws/src
 ros2 pkg create --build-type ament_python object_loader --dependencies rclpy geometry_msgs moveit_msgs
 ros2 pkg create --build-type ament_python grasp_planner   --dependencies rclpy geometry_msgs sensor_msgs visualization_msgs
 ros2 pkg create --build-type ament_python manipulation_demo --dependencies rclpy moveit_msgs moveit_commander geometry_msgs
 
-# 6) 回到工作区根，第一次构建 Return to the workspace root, first build
+# 6) Return to the workspace root, first build
 cd ..
 source /opt/ros/jazzy/setup.bash
 colcon build
 source install/setup.bash
 
-# 7) 返回项目根，放个最小脚本占位    Go back to the project root and place a minimal script as a placeholder
+# 7)  Go back to the project root and place a minimal script as a placeholder
 cd ~/projects/3d_manipulation_project
 printf '#!/usr/bin/env bash\nset -e\n# TODO: obj_name from args\n' > scripts/run_reconstruction.sh
 chmod +x scripts/run_reconstruction.sh
@@ -97,12 +97,11 @@ chmod +x scripts/run_reconstruction.sh
 printf '#!/usr/bin/env bash\nset -e\nsource /opt/ros/jazzy/setup.bash\ncd ros2_ws\nsource install/setup.bash\n# TODO: launch RViz/MoveIt demo\n' > scripts/run_demo.sh
 chmod +x scripts/run_demo.sh
 
-##  4. # 回到项目根
+## 4. # Return to the project root
 cd ~/projects/3d_manipulation_project
 
-# 标定与照片目录
+# Calibration and Photo Directory
 mkdir -p reconstruction/calib/images
-
 
 ## 5. reconstruction/calib/calib_chessboard.py
 
