@@ -310,17 +310,18 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
 1. Place object images into:
 
    ```text
-   data/obj1_small/
-   data/obj2_small/
-   # (or obj3_small / obj4_small / obj5_small depending on which object)
+   data/obj3_small/
+   data/obj4_small/
+   data/obj5_small/
    ```
+   - the 'objx_small' below can be substituted by different number within 'x' when trying to generate different images.
 
 2. run COLMAP **feature extraction**:
 
    ```bash
    colmap feature_extractor \
-     --database_path reconstruction/sfm/obj1_small/db.db \
-     --image_path    data/obj1_small \
+     --database_path reconstruction/sfm/obj4_small/db.db \
+     --image_path    data/obj4_small \
      --SiftExtraction.use_gpu=0 \
      --SiftExtraction.max_image_size=2000 \
      --SiftExtraction.max_num_features=8000
@@ -330,7 +331,7 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
 
    ```bash
    colmap sequential_matcher \
-     --database_path reconstruction/sfm/obj1_small/db.db \
+     --database_path reconstruction/sfm/obj4_small/db.db \
      --SequentialMatching.overlap=6
    ```
 
@@ -338,9 +339,9 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
 
    ```bash
    colmap mapper \
-     --database_path reconstruction/sfm/obj1_small/db.db \
-     --image_path    data/obj1_small \
-     --output_path   reconstruction/sfm/obj1_small
+     --database_path reconstruction/sfm/obj4_small/db.db \
+     --image_path    data/obj4_small \
+     --output_path   reconstruction/sfm/obj4_small
    ```
 
 5. In `reconstruction/sfm/obj1_small/`, find the subdirectory (`0`, `1`, `2`, …) that contains the **largest** `images.bin` (most registered images). Call this directory `X`.
@@ -349,9 +350,9 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
 
    ```bash
    colmap image_undistorter \
-     --image_path  data/obj1_small \
-     --input_path  reconstruction/sfm/obj1_small/X \
-     --output_path reconstruction/mvs/obj1_small \
+     --image_path  data/obj4_small \
+     --input_path  reconstruction/sfm/obj4_small/X \
+     --output_path reconstruction/mvs/obj4_small \
      --max_image_size=2000
    ```
 
@@ -361,10 +362,10 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
 
 The dense reconstruction is run via COLMAP on Windows, accessing the WSL path.
 
-1. Set the workspace path (example):
+1. Set the workspace path:
 
    ```powershell
-   $ws = "\\wsl$\Ubuntu-24.04\root\projects\3d_manipulation_project\reconstruction\mvs\obj1_small"
+   $ws = "\\wsl$\Ubuntu-24.04\root\projects\3d_manipulation_project\reconstruction\mvs\obj4_small"
    ```
 
 2. Provide COLMAP executable:
@@ -383,14 +384,14 @@ The dense reconstruction is run via COLMAP on Windows, accessing the WSL path.
 4. Open the fused point cloud/mesh in MeshLab:
 
    ```bash
-   meshlab /root/projects/3d_manipulation_project/reconstruction/mvs/obj1_small/fused.ply
+   meshlab /root/projects/3d_manipulation_project/reconstruction/mvs/obj4_small/fused.ply
    ```
 
 ---
 
 ## 8. Mesh Cleaning and Export
 
-In MeshLab (or Blender):
+In MeshLab:
 
 1. Open `reconstruction/mvs/objX_small/fused.ply`.
 
