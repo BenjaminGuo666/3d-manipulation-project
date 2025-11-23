@@ -1,15 +1,13 @@
-下面是我帮你整理好、适合直接放到 GitHub 上的 `README.md`，我把结构、标题、代码块都规整了一下，内容基本还是你原来的，只是格式清晰很多，你可以直接复制粘贴过去使用（如果有不想展示的步骤可以自己删减）。
 
 ---
 
-````markdown
 # 3D Manipulation Project
 
-This repository contains the code, data and instructions for my individual project on **3D reconstruction and robotic manipulation**.
+This repository contains the code, data and instructions for my individual project on **3D reconstruction for robotic manipulation**.
 
 The goals are:
 
-1. Reconstruct a 3D model of an orange from images using **camera calibration + COLMAP (SfM + MVS)**.
+1. Reconstruct 3D models of an orange from images using **camera calibration + COLMAP (SfM + MVS)**.
 2. Clean the reconstructed mesh and convert it to **STL**.
 3. Import the mesh into a **ROS 2 + MoveIt 2** simulation with a **Panda** robot arm.
 4. Program a **pick-and-place** manipulation and visualise the motion in RViz.
@@ -25,13 +23,60 @@ The project was developed and tested with the following setup:
 
 - **ROS 2**
   - Jazzy Jalisco
+```bash
+# 1) Set locale (only needed once on a fresh system)
+sudo apt update
+sudo apt install -y locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# 2) Add ROS 2 apt repository
+sudo apt install -y software-properties-common curl gnupg lsb-release
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+  -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] \
+  http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
+  | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
+# 3) Install ROS 2 Jazzy (desktop)
+sudo apt update
+sudo apt install -y ros-jazzy-desktop
+
+# 4) Add ROS 2 setup to your shell (optional but convenient)
+echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+source /opt/ros/jazzy/setup.bash
+```
 
 - **MoveIt 2 (Panda demo)**
   - `ros-jazzy-moveit`
   - `ros-jazzy-moveit-resources-panda-moveit-config`
+  ```bash
+  sudo apt update
+  sudo apt install -y \
+  ros-jazzy-moveit \
+  ros-jazzy-moveit-resources-panda-moveit-config
+  ```
+
 
 - **Build tools (for the ROS 2 workspace)**
   - `colcon`, `cmake`, `gcc`, `g++`
+  ```bash
+  sudo apt update
+  sudo apt install -y \
+  build-essential \
+  cmake \
+  git \
+  python3-colcon-common-extensions
+  ```
+  Then build the workspace:
+  ```bash
+  cd ~/projects/3d_manipulation_project/ros2_ws
+  source /opt/ros/jazzy/setup.bash
+  colcon build
+  source install/setup.bash
+  ```
 
 - **3D reconstruction tools**
   - **COLMAP** (used both on Windows and Ubuntu)
@@ -101,7 +146,8 @@ From inside the WSL Linux home directory:
 │   │       ├── images/        # Input images (undistorted)
 │   │       ├── sparse/        # Copied sparse model
 │   │       ├── stereo/        # MVS intermediate data
-│   │       ├── fused.ply      # Dense fused point cloud / mesh
+│   │       ├── fused.ply      # Dense fused point cloud
+│   │       ├── object5.ply    # Cleaned densed fused point mesh
 │   │       ├── fused.ply.vis
 │   │       ├── run-colmap-geometric.sh
 │   │       └── run-colmap-photometric.sh
@@ -110,7 +156,7 @@ From inside the WSL Linux home directory:
 │       ├── obj1.obj
 │       └── obj2.obj
 │
-~/projects/ros2_ws/                   # ROS 2 workspace for the manipulation demo（another independent package）
+├──  ros2_ws/                   # ROS 2 workspace for the manipulation demo（another independent package）
 │   ├── src/
 │   │   └── sfm_pick_place/
 │   │       ├── meshes/
@@ -269,7 +315,7 @@ This generates `camera.yaml` and an example image `undistort_sample.jpg`.
    # (or obj3_small / obj4_small / obj5_small depending on which object)
    ```
 
-2. (Example) run COLMAP **feature extraction**:
+2. run COLMAP **feature extraction**:
 
    ```bash
    colmap feature_extractor \
