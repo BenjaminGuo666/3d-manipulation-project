@@ -7,7 +7,7 @@ This repository contains the code, data and instructions for my individual proje
 
 The goals are:
 
-1. Reconstruct 3D models of an orange from images using **camera calibration + COLMAP (SfM + MVS)**.
+1. Reconstruct 3D models of an orange，kiwi and cigarette pack from images using **camera calibration + COLMAP (SfM + MVS)**.
 2. Clean the reconstructed mesh and convert it to **STL**.
 3. Import the mesh into a **ROS 2 + MoveIt 2** simulation with a **Panda** robot arm.
 4. Program a **pick-and-place** manipulation and visualise the motion in RViz.
